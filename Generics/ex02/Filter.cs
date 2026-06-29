@@ -6,18 +6,29 @@ public delegate bool Predicate<T>(T input);
 
 public class Filter<T>
 {
-    public List<T> FilteredItems = new List<T>();
-    public Predicate<T>? Predicate = null;
+    public T[] FilteredItems;
+    public Predicate<T> Predicate;
     
     public Filter(Predicate<T> predicate)
     {
         Predicate = predicate;
     }
     
-    public void FilterList(List<T> items)
+    public void FilterList(T[] items)
     {
-        foreach (var item in items)
+        int cnt = 0;
+        T[] ret = new T[items.Length];
+
+        foreach (T item in items)
+        {
             if (Predicate.Invoke(item))
-                FilteredItems.Add(item);
+            {
+                ret[cnt] = item;
+                cnt++;
+            }
+        }
+        
+        Array.Resize(ref ret, cnt);
+        FilteredItems = ret;
     }
 }

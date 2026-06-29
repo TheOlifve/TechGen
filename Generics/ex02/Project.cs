@@ -4,20 +4,24 @@ public delegate Tout Func<Tin, Tout>(Tin item);
 
 public class Project<Tin, Tout>
 {
-    Func<Tin, Tout>? Projection = null;
+    private Func<Tin, Tout> _projection;
     
     public Project(Func<Tin, Tout> projection)
     {
-        Projection = projection;
+        _projection = projection;
     }
 
-    public List<Tout> ProjectList(List<Tin> items)
+    public Tout[] ProjectList(Tin[] items)
     {
-        List<Tout> retList = new List<Tout>();
+        int cnt = 0;
+        Tout[] ret = new Tout[items.Length];
+
+        foreach (Tin item in items)
+        {
+            ret[cnt] = _projection.Invoke(item);
+            cnt++;
+        }
         
-        foreach (var item in items)
-            retList.Add(Projection.Invoke(item));
-        
-        return retList;
+        return ret;
     }
 }
