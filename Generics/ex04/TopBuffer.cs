@@ -20,10 +20,8 @@ public class TopBuffer<T> where T: IComparable<T>
         }
 
         for (int i = 0; i < Buffer.Length; i++)
-        {
             if (Buffer[i].CompareTo(Buffer[_indexOfMin]) < 0)
                 _indexOfMin = i;
-        }
         
         if (obj.CompareTo(Buffer[_indexOfMin]) > 0)
             Buffer[_indexOfMin] = obj;
