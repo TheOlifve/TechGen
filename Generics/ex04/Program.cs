@@ -18,8 +18,8 @@ class Program
     static void Main(string[] args)
     {
         TopBuffer<int> buff = new TopBuffer<int>(3);
-        int[] arr = {5,1,9,3,7,2 };
-        buff.FindTopElements(arr);
+        int[] arr = { 5,1,9,3,7,2, 6, 6, 10 };
+        buff.AddRange(arr);
         PrintArray(buff.Buffer);
     }
 }

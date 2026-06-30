@@ -3,26 +3,35 @@ namespace ex04;
 public class TopBuffer<T> where T: IComparable<T>
 {
     public T[] Buffer;
-    private int _index = -1;
+    private int _index = 0;
+    private int _indexOfMin = 0;
     
     public TopBuffer(int size)
     {
         Buffer = new T[size];
     }
 
-    public void FindTopElements(T[] other)
+    public void Add(T obj)
     {
-        T[] tmp = new T[other.Length];
-        
-        Array.Copy(other, tmp, other.Length);
-        Array.Sort(tmp);
-
-        for (int i = tmp.Length - 1; i >= 0; i--)
+        if (_index < Buffer.Length)
         {
-            _index++;
-            if (_index >= Buffer.Length)
-                break;
-            Buffer[_index] = tmp[i];
+            Buffer[_index++] = obj;
+            return;
         }
+
+        for (int i = 0; i < Buffer.Length; i++)
+        {
+            if (Buffer[i].CompareTo(Buffer[_indexOfMin]) < 0)
+                _indexOfMin = i;
+        }
+        
+        if (obj.CompareTo(Buffer[_indexOfMin]) > 0)
+            Buffer[_indexOfMin] = obj;
+    }
+
+    public void AddRange(T[] arr)
+    {
+        for (int i = 0; i < arr.Length; i++)
+            Add(arr[i]);
     }
 }
