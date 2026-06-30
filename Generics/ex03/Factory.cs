@@ -6,9 +6,9 @@ public interface IInitilizer
     public bool Initilized { get; }
 }
 
-public class Factory<T> where T : IInitilizer, new()
+public static class Factory<T> where T : IInitilizer, new()
 {
-    public T Create()
+    public static T Create()
     {
         T instance = new T();
         instance.Initilize();
