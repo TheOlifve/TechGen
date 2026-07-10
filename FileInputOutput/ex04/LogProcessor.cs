@@ -2,9 +2,9 @@ using System.Text;
 
 namespace ex04;
 
-public class LogProcessor
+public static class LogProcessor
 {
-    public void Create()
+    public static void Create()
     {
         StreamWriter writer = new StreamWriter("log.txt", false, Encoding.UTF8);
         
