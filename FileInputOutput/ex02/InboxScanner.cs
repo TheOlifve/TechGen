@@ -4,6 +4,7 @@ public static class InboxScanner
 {
     public static void Scan(string directoryPath)
     {
+        Console.WriteLine($"Scanning directory: {directoryPath}");
         try
         {
             Directory.CreateDirectory(directoryPath);
