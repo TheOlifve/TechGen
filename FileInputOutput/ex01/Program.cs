@@ -6,7 +6,6 @@ class Program
 {
     static void Main(string[] args)
     {
-        DailyReportArchiver d = new DailyReportArchiver();
         var absolutePath = Path.GetFullPath(System.Environment.CurrentDirectory);
         StringBuilder report = new StringBuilder();
         report.Append($"Daily Report - {DateTime.Now.ToShortDateString()}\n");
@@ -14,6 +13,6 @@ class Program
         report.Append("No blockers were reported. All systems running normally.\n");
         report.Append("Next check-in scheduled for 9:00 AM tomorrow.\n");
         
-        d.CreateDailyReport(report.ToString(), absolutePath);
+        DailyReportArchiver.CreateDailyReport(report.ToString(), absolutePath);
     }
 }

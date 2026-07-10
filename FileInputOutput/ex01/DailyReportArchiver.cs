@@ -2,9 +2,9 @@ using System.Text;
 
 namespace ex01;
 
-public class DailyReportArchiver
+public static class DailyReportArchiver
 {
-    public void CreateDailyReport(string report, string path)
+    public static void CreateDailyReport(string report, string path)
     {
         string fileName = $"Report_{DateTime.Today.Date.Day}{DateTime.Today.Month}{DateTime.Today.Year}_{DateTime.Now.Hour}{DateTime.Now.Minute}{DateTime.Now.Second}.txt";
         
@@ -18,7 +18,7 @@ public class DailyReportArchiver
             Console.WriteLine("Failed");
     }
 
-    private bool ValidateReport(string currentReport, string reportFromFile)
+    private static bool ValidateReport(string currentReport, string reportFromFile)
     {
         if (currentReport != reportFromFile)
             return false;
