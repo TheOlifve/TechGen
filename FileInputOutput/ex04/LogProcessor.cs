@@ -27,5 +27,8 @@ public class LogProcessor
         }
         
         Console.WriteLine($"{errorCount} errors detected");
+        
+        reader.Dispose();
+        writer.Dispose();
     }
 }

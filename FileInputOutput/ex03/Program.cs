@@ -20,5 +20,7 @@ class Program
         
         PartialBinaryDownloader.DownloadChunk(fileName, blockA, 0);
         PartialBinaryDownloader.DownloadChunk(fileName, blockB, 1024);
+        
+        // Console.WriteLine(PartialBinaryDownloader.Verification(fileName, blockA, blockB,1024));
     }
 }
