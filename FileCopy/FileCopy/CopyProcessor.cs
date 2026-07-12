@@ -11,12 +11,15 @@ static class CopyProcessor
         while (true)
         {
             monitor.ChunkStart();
-                
-            if (sourceStream.Read(buffer, 0, buffer.Length) <= 0)
+         
+            int bytesRead = sourceStream.Read(buffer, 0, buffer.Length);
+            
+            if (bytesRead <= 0)
                 break;
-            destinationStream.Write(buffer, 0, buffer.Length);
+            
+            destinationStream.Write(buffer, 0, bytesRead);
             destinationStream.Flush();
-                
+            
             monitor.ChunkEnd();
         }
         monitor.StopCopy();
