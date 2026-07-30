@@ -32,6 +32,7 @@ public static class AuditDiff<T>
                 foreach (var item in enumerator)
                 {
                     Console.WriteLine($"{propertyInfo.Name}.{item}");
+                    
                 }
             }
          
