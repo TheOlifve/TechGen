@@ -1,0 +1,15 @@
+/Users/hrant/Desktop/TechGen C#/TechGen/AuditDiff/AuditDiff/bin/Debug/net10.0/AuditDiff
+/Users/hrant/Desktop/TechGen C#/TechGen/AuditDiff/AuditDiff/bin/Debug/net10.0/AuditDiff.deps.json
+/Users/hrant/Desktop/TechGen C#/TechGen/AuditDiff/AuditDiff/bin/Debug/net10.0/AuditDiff.runtimeconfig.json
+/Users/hrant/Desktop/TechGen C#/TechGen/AuditDiff/AuditDiff/bin/Debug/net10.0/AuditDiff.dll
+/Users/hrant/Desktop/TechGen C#/TechGen/AuditDiff/AuditDiff/bin/Debug/net10.0/AuditDiff.pdb
+/Users/hrant/Desktop/TechGen C#/TechGen/AuditDiff/AuditDiff/obj/Debug/net10.0/AuditDiff.GeneratedMSBuildEditorConfig.editorconfig
+/Users/hrant/Desktop/TechGen C#/TechGen/AuditDiff/AuditDiff/obj/Debug/net10.0/AuditDiff.AssemblyInfoInputs.cache
+/Users/hrant/Desktop/TechGen C#/TechGen/AuditDiff/AuditDiff/obj/Debug/net10.0/AuditDiff.AssemblyInfo.cs
+/Users/hrant/Desktop/TechGen C#/TechGen/AuditDiff/AuditDiff/obj/Debug/net10.0/AuditDiff.csproj.CoreCompileInputs.cache
+/Users/hrant/Desktop/TechGen C#/TechGen/AuditDiff/AuditDiff/obj/Debug/net10.0/AuditDiff.sourcelink.json
+/Users/hrant/Desktop/TechGen C#/TechGen/AuditDiff/AuditDiff/obj/Debug/net10.0/AuditDiff.dll
+/Users/hrant/Desktop/TechGen C#/TechGen/AuditDiff/AuditDiff/obj/Debug/net10.0/refint/AuditDiff.dll
+/Users/hrant/Desktop/TechGen C#/TechGen/AuditDiff/AuditDiff/obj/Debug/net10.0/AuditDiff.pdb
+/Users/hrant/Desktop/TechGen C#/TechGen/AuditDiff/AuditDiff/obj/Debug/net10.0/AuditDiff.genruntimeconfig.cache
+/Users/hrant/Desktop/TechGen C#/TechGen/AuditDiff/AuditDiff/obj/Debug/net10.0/ref/AuditDiff.dll
