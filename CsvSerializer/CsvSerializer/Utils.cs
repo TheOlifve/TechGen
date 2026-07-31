@@ -13,7 +13,7 @@ public class CsvPropertyInfo
         CultureInfo.CurrentCulture = new CultureInfo("Invariant");
         Name = name;
         Value = value == null ? "(missing)" : value.ToString();
-        if (Value.Contains(",") || Value.Contains("\n") || Value.Contains(""))
+        // if (Value.Contains(",") || Value.Contains("\n") || Value.Contains(""))
             
         Priority = priority;
     }
