@@ -5,6 +5,20 @@ namespace AuditDiff;
 
 public class AuditDiff
 {
+    
+    private static Dictionary<string, PropertyInfo[]> _cache = new Dictionary<string, PropertyInfo[]>();
+
+    private static PropertyInfo[] Cache(Type type)
+    {
+        if (_cache.ContainsKey(type.FullName))
+            return _cache[type.FullName];
+     
+        PropertyInfo[] properties = type.GetProperties(BindingFlags.Public | BindingFlags.Instance);
+        _cache.Add(type.FullName, properties);
+        
+        return _cache[type.FullName];
+    }
+    
     private bool IsScalar(Type type)
     {
         return (type.IsPrimitive
@@ -37,7 +51,7 @@ public class AuditDiff
             return;
         }
         
-        IEnumerable<PropertyInfo> properties = type.GetProperties(BindingFlags.Public | BindingFlags.Instance);
+        IEnumerable<PropertyInfo> properties = Cache(type);
         
         IEnumerable<AuditIgnoreAttribute> ignoreAttribute = type.GetCustomAttributes<AuditIgnoreAttribute>();
         
