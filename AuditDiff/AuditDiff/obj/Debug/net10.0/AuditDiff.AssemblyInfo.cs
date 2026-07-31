@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("AuditDiff")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e958fe28f8d59a3015e6ca1ddc011a2957d56eb0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+33e2977069bd2015fe919ee8d64b691a5e0b3a73")]
 [assembly: System.Reflection.AssemblyProductAttribute("AuditDiff")]
 [assembly: System.Reflection.AssemblyTitleAttribute("AuditDiff")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
