@@ -11,6 +11,12 @@ public sealed class OrderLine
     public string Sku { get; set; } = "";
     public int Quantity { get; set; }
 
+    public OrderLine()
+    {
+        Sku = "tmp";
+        Quantity = 1;
+    }
+
     public OrderLine(string sku, int quantity)
     {
         Sku = sku;

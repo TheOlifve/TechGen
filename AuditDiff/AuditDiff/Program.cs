@@ -10,6 +10,7 @@ class Program
         order.Lines[1].Quantity = 22;
         order.Lines[2].Sku = "aaaaa";
         order.Tags[2] = "Tag4";
+        order.Tags[1] = null;
         order.RowVersion = [0, 2, 2, 3, 4, 5, 6, 7, 8, 100, 10, 11, 12, 13, 33, 15];
     }
 
@@ -17,12 +18,10 @@ class Program
     {
         Order before = new Order();
         Order after = new Order();
-
-        // string a = "a";
-        // string b = "b";
+        AuditDiff auditDiff = new AuditDiff();
         
         ChangeOrder(after);
-        // AuditDiff<string>.Diff(a, b);
-        AuditDiff<Order>.Diff(before, after);
+
+        auditDiff.Diff(before, after);
     }
 }

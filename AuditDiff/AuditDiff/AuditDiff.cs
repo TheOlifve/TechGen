@@ -3,11 +3,39 @@ using System.Reflection;
 
 namespace AuditDiff;
 
-public static class AuditDiff<T>
+public class AuditDiff
 {
-    public static void Diff(T before, T after)
+    private bool IsScalar(Type type)
     {
-        Type type = typeof(T);
+        return (type.IsPrimitive
+                || type.IsEnum
+                || type == typeof(string)
+                || type == typeof(decimal)
+                || type == typeof(DateTime)
+                || type == typeof(DateTimeOffset)
+                || type == typeof(TimeSpan)
+                || type == typeof(Guid));
+    }
+
+    private void LogDiff(object? before, object? after, string fullPath)
+    {
+        object? beforeValue = before == null ? "(missing)" : before;
+        object? afterValue = after == null ? "(missing)" : after;
+        
+        Console.WriteLine($"{fullPath} | {beforeValue} | {afterValue}");
+    }
+    
+    private void FindDiff(object? before, object? after, string? path = null, string? flag = null)
+    {
+        Type type = before.GetType();
+        string fullPath = path == null ? type.Name : flag == "Collection" ? $"{path}" : $"{path}.{type.Name}";
+
+        if (IsScalar(type))
+        {
+            if (!before.Equals(after))
+                LogDiff(before, after, fullPath);
+            return;
+        }
         
         IEnumerable<PropertyInfo> properties = type.GetProperties(BindingFlags.Public | BindingFlags.Instance);
         
@@ -22,28 +50,41 @@ public static class AuditDiff<T>
 
             if (propertyInfo.PropertyType.FullName.Contains("Collections"))
             {
-                Console.WriteLine("Collection found");
-                object? t = propertyInfo.GetValue(before);
-                IEnumerable enumerator = (IEnumerable)t;
-                
-                if (enumerator == null)
-                    continue;
+                IEnumerable enumerableA = (IEnumerable)propertyInfo.GetValue(before);
+                IEnumerable enumerableB = (IEnumerable)propertyInfo.GetValue(after);
 
-                foreach (var item in enumerator)
+                IEnumerator enumeratorA = enumerableA.GetEnumerator();
+                IEnumerator enumeratorB = enumerableB.GetEnumerator();
+                
+
+                int index = 0;
+                while (enumeratorA.MoveNext() && enumeratorB.MoveNext())
                 {
-                    Console.WriteLine($"{propertyInfo.Name}.{item}");
-                    
+                    FindDiff(enumeratorA.Current, enumeratorB.Current, $"{fullPath}.{propertyInfo.Name}[{index}]", "Collection");
+                    ++index;
                 }
+                
+                continue;
             }
-         
+            
+            if (!IsScalar(propertyInfo.PropertyType))
+            {
+                FindDiff(propertyInfo.GetValue(before), propertyInfo.GetValue(after), fullPath);
+                continue;
+            }
+            
             if (!propertyInfo.GetValue(before).Equals(propertyInfo.GetValue(after)))
             {
                 AuditNameAttribute? nameAttrib = propertyInfo.GetCustomAttribute<AuditNameAttribute>();
                 
                 string name = nameAttrib?.Name ?? propertyInfo.Name;
-                
-                Console.WriteLine($"{type.Name}.{name}: {propertyInfo.GetValue(before)} | {propertyInfo.GetValue(after)}");
+                LogDiff(propertyInfo.GetValue(before), propertyInfo.GetValue(after), $"{fullPath}.{name}");
             }
         }
+    }
+    
+    public void Diff(object? before, object? after)
+    {
+        FindDiff(before, after);
     }
 }
