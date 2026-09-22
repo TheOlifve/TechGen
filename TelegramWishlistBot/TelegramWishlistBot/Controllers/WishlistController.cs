@@ -78,4 +78,10 @@ public class WishlistController: ControllerBase
             return NotFound();
         return Ok(item);
     }
+
+    [HttpGet("GetAllItems")]
+    public async Task<IActionResult> GetAllItems()
+    {
+        return Ok(await _service.GetWishlistItems());
+    }
 }

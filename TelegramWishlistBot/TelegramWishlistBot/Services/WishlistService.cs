@@ -87,4 +87,12 @@ public class WishlistService: IWishlistService
         
         return true;
     }
+
+    public async Task<ICollection<WishlistItem>> GetWishlistItems()
+    {
+        return await _db.WishlistItems.
+            AsNoTracking().
+            Include(i => i.ItemUrls).
+            ToListAsync();
+    }
 }
