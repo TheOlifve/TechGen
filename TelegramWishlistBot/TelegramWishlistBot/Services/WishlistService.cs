@@ -1,4 +1,6 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using TelegramWishlistBot.DTO;
 
 namespace TelegramWishlistBot.Services;
 
@@ -8,14 +10,15 @@ using TelegramWishlistBot.Models;
 public class WishlistService: IWishlistService
 {
     private readonly WishlistDbContext _db;
+    private readonly PasswordHasher<AppUser> _passwordHasher;
     
-    
-    public WishlistService(WishlistDbContext db)
+    public WishlistService(WishlistDbContext db, PasswordHasher<AppUser> passwordHasher)
     {
         _db = db;
+        _passwordHasher = passwordHasher;
     }
 
-    public async Task<WishlistItem?> Create(string? title, string? description, string? url)
+    public async Task<WishlistItem?> Create(string? title, string? description, string? url, int userId)
     {
         WishlistItem wishlistItem = new WishlistItem();
         
@@ -30,6 +33,7 @@ public class WishlistService: IWishlistService
             newUrl.Item = wishlistItem;
             wishlistItem.ItemUrls.Add(newUrl);
         }
+        wishlistItem.AppUserId = userId;
         
         await _db.WishlistItems.AddAsync(wishlistItem);
         await _db.SaveChangesAsync();
@@ -37,34 +41,40 @@ public class WishlistService: IWishlistService
         return wishlistItem;
     }
 
-    public async Task<WishlistItem?> GetWishlistItem(int id)
-    {
-        return await _db.WishlistItems.FindAsync(id);
-    }
-
-    public async Task<WishlistItem?> GetWishlistItemWithUrls(int id)
+    public async Task<WishlistItem?> GetWishlistItem(int userId, int id)
     {
         return await _db.WishlistItems.
+            Where(i => i.AppUserId == userId).
+            FirstOrDefaultAsync(i => i.WishlistItemId == id);
+    }
+
+    public async Task<WishlistItem?> GetWishlistItemWithUrls(int userId, int id)
+    {
+        return await _db.WishlistItems.
+            Where(u => u.AppUserId == userId).
             Include(i => i.ItemUrls).
             FirstOrDefaultAsync(u => u.WishlistItemId == id);
     }
 
-    public async Task<WishlistItem?> AddUrlToItem(int wishlistItemId, string url)
+    public async Task<WishlistItem?> AddUrlToItem(WishlistItem? wishlistItem, string url)
     {
-        WishlistItem? wishlistItem = await _db.WishlistItems.FindAsync(wishlistItemId);
-        
         if (wishlistItem == null)
             return null;
         
-        wishlistItem.ItemUrls.Add(new ItemUrl() {  WishlistItemId = wishlistItemId ,Url = url });
+        wishlistItem.ItemUrls.Add(new ItemUrl() {  WishlistItemId = wishlistItem.WishlistItemId ,Url = url });
         await _db.SaveChangesAsync();
         
         return wishlistItem;
     }
 
-    public async Task<bool> RemoveUrl(int itemUrlId)
+    public async Task<bool> RemoveUrl(int userId, int itemId, int itemUrlId)
     {
-        ItemUrl? itemUrl = await _db.ItemUrls.FindAsync(itemUrlId);
+        ItemUrl? itemUrl = await _db.ItemUrls.
+            Include(i => i.Item).
+            FirstOrDefaultAsync(i =>
+                i.WishlistItemId == itemId &&
+                i.ItemUrlId == itemUrlId &&
+                i.Item!.AppUserId == userId);
         
         if (itemUrl == null)
             return false;
@@ -75,10 +85,15 @@ public class WishlistService: IWishlistService
         return true;
     }
 
-    public async Task<bool> UpdateUrl(int itemUrlId, string url)
+    public async Task<bool> UpdateUrl(int userId, int itemId, int itemUrlId, string url)
     {
-        ItemUrl? itemUrl = await _db.ItemUrls.FindAsync(itemUrlId); ;
-                
+        ItemUrl? itemUrl = await _db.ItemUrls.
+            Include(i => i.Item).
+            FirstOrDefaultAsync(i =>
+                i.WishlistItemId == itemId &&
+                i.ItemUrlId == itemUrlId &&
+                i.Item!.AppUserId == userId);
+        
         if (itemUrl == null)
             return false;
         
@@ -88,10 +103,11 @@ public class WishlistService: IWishlistService
         return true;
     }
 
-    public async Task<ICollection<WishlistItem>> GetWishlistItems()
+    public async Task<ICollection<WishlistItem>> GetWishlistItems(int userId)
     {
         return await _db.WishlistItems.
             AsNoTracking().
+            Where(u => u.AppUserId == userId).
             Include(i => i.ItemUrls).
             ToListAsync();
     }

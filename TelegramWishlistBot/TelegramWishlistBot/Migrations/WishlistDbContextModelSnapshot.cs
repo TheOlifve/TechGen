@@ -22,6 +22,28 @@ namespace TelegramWishlistBot.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("TelegramWishlistBot.Models.AppUser", b =>
+                {
+                    b.Property<int>("AppUserId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("AppUserId"));
+
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Username")
+                        .HasColumnType("text");
+
+                    b.HasKey("AppUserId");
+
+                    b.HasIndex("Username")
+                        .IsUnique();
+
+                    b.ToTable("AppUsers");
+                });
+
             modelBuilder.Entity("TelegramWishlistBot.Models.ItemUrl", b =>
                 {
                     b.Property<int>("ItemUrlId")
@@ -51,6 +73,9 @@ namespace TelegramWishlistBot.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("WishlistItemId"));
 
+                    b.Property<int>("AppUserId")
+                        .HasColumnType("integer");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
@@ -68,6 +93,8 @@ namespace TelegramWishlistBot.Migrations
 
                     b.HasKey("WishlistItemId");
 
+                    b.HasIndex("AppUserId");
+
                     b.ToTable("WishlistItems");
                 });
 
@@ -80,6 +107,22 @@ namespace TelegramWishlistBot.Migrations
                         .IsRequired();
 
                     b.Navigation("Item");
+                });
+
+            modelBuilder.Entity("TelegramWishlistBot.Models.WishlistItem", b =>
+                {
+                    b.HasOne("TelegramWishlistBot.Models.AppUser", "AppUser")
+                        .WithMany("WishlistItems")
+                        .HasForeignKey("AppUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AppUser");
+                });
+
+            modelBuilder.Entity("TelegramWishlistBot.Models.AppUser", b =>
+                {
+                    b.Navigation("WishlistItems");
                 });
 
             modelBuilder.Entity("TelegramWishlistBot.Models.WishlistItem", b =>

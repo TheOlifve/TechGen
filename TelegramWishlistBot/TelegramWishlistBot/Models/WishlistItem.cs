@@ -19,4 +19,6 @@ public class WishlistItem
     public ItemStatus Status { get; set; } =  ItemStatus.Wished;
     
     public ICollection<ItemUrl> ItemUrls{ get; set; } = new List<ItemUrl>();
+    public int AppUserId { get; set; }
+    public AppUser? AppUser { get; set; }
 }
